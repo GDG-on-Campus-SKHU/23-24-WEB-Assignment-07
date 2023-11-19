@@ -1,0 +1,40 @@
+@common_width : 20px;
+@common_height: 100%;
+
+
+.head {
+    background: white;
+    box-shadow: 0px 0px 12px lightgrey;
+    border-radius: 12px;
+    position: absolute;
+  }
+  
+  .title {
+    cursor: move;
+  }
+  
+  .resizeRight {
+    position: absolute;
+    right: 0;
+    width: @common_width;
+    height: 100%;
+    cursor: e-resize;
+  }
+  
+  .resizeBottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+    cursor: s-resize;
+  }
+  
+  .resizeDiagonal {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: @common_width;
+    height: 20px;
+    cursor: se-resize;
+  }
+  
