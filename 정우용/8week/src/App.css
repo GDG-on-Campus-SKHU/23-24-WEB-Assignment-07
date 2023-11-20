@@ -1,0 +1,24 @@
+.window {
+    position: absolute;
+    border: 1px solid black;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.title-bar {
+    background: #ddd;
+    padding: 5px;
+    cursor: move;
+}
+
+.content {
+    padding: 10px;
+}
+
+.resize-handle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    cursor: se-resize;
+}
