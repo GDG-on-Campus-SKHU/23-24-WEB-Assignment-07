@@ -46,9 +46,9 @@ const Test = () => {
 
   const handleMouseMove = (e: MouseEvent) => {
     //MouseEvent 수정
+    const deltaX = e.clientX - startDrag.x;
+    const deltaY = e.clientY - startDrag.y;
     if (isDragging) {
-      const deltaX = e.clientX - startDrag.x;
-      const deltaY = e.clientY - startDrag.y;
       setPosition((prevPosition) => ({
         x: prevPosition.x + deltaX,
         y: prevPosition.y + deltaY,
@@ -57,9 +57,6 @@ const Test = () => {
     }
 
     if (resizeMode > 0) {
-      const deltaX = e.clientX - startDrag.x;
-      const deltaY = e.clientY - startDrag.y;
-
       setSize((prevSize) => ({
         width: resizeMode !== 2 ? prevSize.width + deltaX : prevSize.width,
         height: resizeMode !== 1 ? prevSize.height + deltaY : prevSize.height,
@@ -125,6 +122,7 @@ const Test = () => {
         background: "white",
         boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.3)",
         borderRadius: "12px",
+        padding: "12px", //padding 추가
       }}
     >
       <div
