@@ -1,25 +1,24 @@
 import React, { useEffect } from 'react';
 
-// 마우스 업 이벤트를 감지하는 컴포넌트
+// document 전역에서 마우스 업 이벤트를 감지하고 해당 이벤트가 발생하면 prop으로 전달받은 핸들러를 실행하는 역할을 하는 함수
 const MouseUp = ({ handleMouseUp }: { handleMouseUp: () => void }) => {
+  /* useEffect를 사용하여 컴포넌트가 마운트될 때 document에 이벤트 리스너를 등록하고, 언마운트될 때 이벤트 리스너를 해제*/
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 실행되는 부분
+    // 마우스 업 이벤트가 발생하면 handleMouseUp을 호출
     const handleMouseUpInternal = () => {
-      // 전달받은 콜백 함수를 호출하여 마우스 업 이벤트 전달
       handleMouseUp();
     };
 
-    // 마우스 업 이벤트를 감지하고 위에서 정의한 핸들러 함수를 호출
+    // document 전역에 마우스 업 이벤트 리스너 등록
     document.addEventListener("mouseup", handleMouseUpInternal);
 
-    // 컴포넌트가 언마운트되거나 업데이트되기 전에 실행되는 부분
+    // 컴포넌트 언마운트 시에 이벤트 리스너 해제
     return () => {
-      // 마우스 업 이벤트 리스너를 제거하여 메모리 누수 방지
       document.removeEventListener("mouseup", handleMouseUpInternal);
     };
-  }, [handleMouseUp]); // handleMouseUp 함수가 업데이트될 때마다 useEffect가 다시 실행
+  }, [handleMouseUp]); // handleMouseUp이 변경될 때마다 useEffect가 다시 실행됨
 
-  // JSX에서는 아무것도 렌더링하지 않도록 null을 반환(이벤트 리스너의 해제를 위해 있는 코드)
+  // MouseUp 컴포넌트는 실제로 렌더링되는 부분이 없으므로 null을 반환
   return null;
 };
 
