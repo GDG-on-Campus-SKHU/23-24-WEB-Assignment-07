@@ -1,0 +1,39 @@
+#root{
+  height:100vh;
+  width:100vw;
+  margin:0;
+}
+
+.VirtualW{ 
+  border: 1px solid white;
+  box-shadow: 2px 2px 2px 2px gray;
+  width: 100px;
+  height:100px;
+  position:relative;
+}
+.VirtualW h1{
+  margin:0;
+}
+.resize {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px; /* 또는 다른 너비 */
+  height: 100%;
+  cursor: ew-resize;
+}
+.downsize{
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  height:10px;
+  width:100%;
+  cursor:s-resize;
+}
+.allresize{
+  position: absolute;
+  right:0px;
+  width:10px;
+  height: 10px;
+  cursor: nwse-resize;
+}
