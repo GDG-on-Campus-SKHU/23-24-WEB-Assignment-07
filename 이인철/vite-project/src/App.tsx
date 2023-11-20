@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, MouseEvent } from "react";
+import React, { useEffect, useRef, MouseEvent, useState } from "react";
 import './App.css';
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
   });
   const handleMouseDown = (event: globalThis.MouseEvent) => {
     if (virtualWref.current instanceof HTMLElement) {
+      
       if (event.target === h1ref.current) {
         isDragging.current = true;
         offset.current = {
@@ -36,17 +37,18 @@ function App() {
         };
       } else if (event.target === resize1.current) {
         isResizing.current = true;
-        let target = event.target as HTMLDivElement
-        let a =target.getBoundingClientRect() //getBoundingClientRect() 크기나 위치 정보 반환
+        const target = event.target as HTMLDivElement
+        const a =target.getBoundingClientRect() //getBoundingClientRect() 크기나 위치 정보 반환
         offset.current = {
           x: event.clientX-a.x,   //마우스가 발생한 이벤트 좌표에서 div x,y좌표를 뺌
           y: event.clientY-a.y,
         }
+        console.log(offset.current.x);
       }
       else if(event.target === downsize.current){
         isDownsizing.current = true;
-        let target = event.target as HTMLDivElement
-        let c =target.getBoundingClientRect() //여기서 target은 downsize div를 가리킴
+        const target = event.target as HTMLDivElement
+        const c =target.getBoundingClientRect() //여기서 target은 downsize div를 가리킴
         offset.current = {
           x: event.clientX-c.x,   //마우스가 발생한 이벤트 좌표에서 div x,y좌표를 뺌
           y: event.clientY-c.y, 
@@ -69,24 +71,28 @@ function App() {
 
   const handleMouseMove = (event: globalThis.MouseEvent) => {
     if (isDragging.current&& virtualWref.current instanceof HTMLElement) {
+     
       const x = event.clientX - offset.current.x;
       const y = event.clientY - offset.current.y;
       virtualWref.current.style.left = `${x}px`;
       virtualWref.current.style.top = `${y}px`;
     }
 
-    if (isResizing.current && virtualWref.current) {
-      const deltaX = event.clientX-offset.current.x;
+    if (isResizing.current && virtualWref.current) { 
+      const a=virtualWref.current.getBoundingClientRect().x;
+      const deltaX = event.clientX-offset.current.x-a;
       virtualWref.current.style.width = `${deltaX}px`;
     }
     if (isDownsizing.current && virtualWref.current) {
-      
-      const deltaX2 = event.clientY-offset.current.y ;
+      const b=virtualWref.current.getBoundingClientRect().y;
+      const deltaX2 = event.clientY-offset.current.y-b ;
       virtualWref.current.style.height = `${deltaX2}px`;
     }
     if(isAllsizing.current && virtualWref.current){
-      const deltaX3 = event.clientY-offset.current.x;
-      const deltaX4 = event.clientX-offset.current.y;
+      const d=virtualWref.current.getBoundingClientRect().x;
+      const e=virtualWref.current.getBoundingClientRect().y;
+      const deltaX3 = event.clientY-offset.current.x-e;
+      const deltaX4 = event.clientX-offset.current.y-d;
       virtualWref.current.style.height = `${deltaX3}px`;
       virtualWref.current.style.width = `${deltaX4}px`;
 
