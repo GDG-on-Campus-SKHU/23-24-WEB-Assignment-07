@@ -12,7 +12,7 @@
   min-height: 100px;
 }
 
-.dragging {
+.draggable-box.dragging {
   cursor: grabbing;
 }
 
