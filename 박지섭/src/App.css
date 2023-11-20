@@ -1,0 +1,72 @@
+.virtual-window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-radius: 8px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.title-bar {
+  border-bottom: 1px solid lightgrey;
+  padding: 15px;
+  display: flex;
+  width: 100%;
+  height: 10px;
+  justify-content: space-between;
+  cursor: move;
+}
+
+.resize-right {
+  position: absolute;
+  height: 96%;
+  right: 1%;
+  top: 1%;
+  cursor: e-resize;
+  border: 3px solid white;
+}
+
+.resize-right:hover {
+  border-color: lightgray;
+}
+
+.resize-right:active {
+  border-color: cornflowerblue;
+}
+
+.resize-bottom {
+  position: absolute;
+  width: 97%;
+  bottom: 1%;
+  left: 1%;
+  cursor: n-resize;
+  border: 3px solid white;
+  border-radius: 10px;
+}
+
+.resize-bottom:hover {
+  border: 2px solid rgb(240, 240, 240);
+  border-color: lightgray;
+}
+
+.resize-bottom:active {
+  border-color: cornflowerblue;
+}
+
+.resize-corner {
+  position: absolute;
+  bottom: 1%;
+  right: 1%;
+  cursor: nw-resize;
+  border: 3px solid white;
+}
+
+.resize-corner:hover {
+  border-color: lightgray;
+}
+
+.resize-corner:active {
+  border-color: cornflowerblue;
+}
