@@ -1,76 +1,73 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const Test = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [size, setSize] = useState({ width: 100, height: 100 });
   const [isDragging, setIsDragging] = useState(false);
-  const [isResizingRight, setIsResizingRight] = useState(false);
-  const [isResizingBottom, setIsResizingBottom] = useState(false);
-  const [isResizingDiagonal, setIsResizingDiagonal] = useState(false);
   const [startDrag, setStartDrag] = useState({ x: 0, y: 0 });
+
+  const [resizeMode, setResizeMode] = useState(0); // 0 = None 1 = ResizeRight, 2 = ResizeBottom 3 = ResizeDiagonal
+  //resizeMode 통합해서 수정
 
   const titleRef = useRef<HTMLDivElement | null>(null);
   const rightResizeRef = useRef<HTMLDivElement | null>(null);
   const bottomResizeRef = useRef<HTMLDivElement | null>(null);
   const diagonalResizeRef = useRef<HTMLDivElement | null>(null);
 
-  const handleMouseDown = (e: MouseEvent) => {
+  const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
     setIsDragging(true);
     setStartDrag({ x: e.clientX, y: e.clientY });
   };
 
-  const handleResizeRightMouseDown = (e: MouseEvent) => {
-    setIsResizingRight(true);
+  const handleResizeRightMouseDown: React.MouseEventHandler<HTMLDivElement> = (
+    e
+  ) => {
+    setResizeMode(1);
     setStartDrag({ x: e.clientX, y: e.clientY });
   };
 
-  const handleResizeBottomMouseDown = (e: MouseEvent) => {
-    setIsResizingBottom(true);
+  const handleResizeBottomMouseDown: React.MouseEventHandler<HTMLDivElement> = (
+    e
+  ) => {
+    setResizeMode(2);
     setStartDrag({ x: e.clientX, y: e.clientY });
   };
 
-  const handleResizeDiagonalMouseDown = (e: MouseEvent) => {
-    setIsResizingDiagonal(true);
+  const handleResizeDiagonalMouseDown: React.MouseEventHandler<
+    HTMLDivElement
+  > = (e) => {
+    setResizeMode(3);
     setStartDrag({ x: e.clientX, y: e.clientY });
   };
-
   const handleMouseUp = () => {
     setIsDragging(false);
-    setIsResizingRight(false);
-    setIsResizingBottom(false);
-    setIsResizingDiagonal(false);
+    setResizeMode(0);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
+    //MouseEvent 수정
     if (isDragging) {
-      setPosition({ x: e.clientX, y: e.clientY });
-    }
-
-    if (isResizingRight || isResizingBottom || isResizingDiagonal) {
       const deltaX = e.clientX - startDrag.x;
       const deltaY = e.clientY - startDrag.y;
-
-      setSize((prevSize) => ({
-        width: isResizingRight ? prevSize.width + deltaX : prevSize.width,
-        height: isResizingBottom ? prevSize.height + deltaY : prevSize.height,
+      setPosition((prevPosition) => ({
+        x: prevPosition.x + deltaX,
+        y: prevPosition.y + deltaY,
       }));
-
       setStartDrag({ x: e.clientX, y: e.clientY });
     }
 
-    if (isResizingDiagonal) {
+    if (resizeMode > 0) {
       const deltaX = e.clientX - startDrag.x;
       const deltaY = e.clientY - startDrag.y;
 
       setSize((prevSize) => ({
-        width: prevSize.width + deltaX,
-        height: prevSize.height + deltaY,
+        width: resizeMode !== 2 ? prevSize.width + deltaX : prevSize.width,
+        height: resizeMode !== 1 ? prevSize.height + deltaY : prevSize.height,
       }));
 
       setStartDrag({ x: e.clientX, y: e.clientY });
     }
   };
-
   useEffect(() => {
     const titleElement = titleRef.current;
     const rightResizeElement = rightResizeRef.current;
@@ -78,31 +75,18 @@ const Test = () => {
     const diagonalResizeElement = diagonalResizeRef.current;
 
     if (titleElement) {
-      titleElement.addEventListener("mousedown", handleMouseDown);
       titleElement.addEventListener("mouseup", handleMouseUp);
     }
 
     if (rightResizeElement) {
-      rightResizeElement.addEventListener(
-        "mousedown",
-        handleResizeRightMouseDown
-      );
       rightResizeElement.addEventListener("mouseup", handleMouseUp);
     }
 
     if (bottomResizeElement) {
-      bottomResizeElement.addEventListener(
-        "mousedown",
-        handleResizeBottomMouseDown
-      );
       bottomResizeElement.addEventListener("mouseup", handleMouseUp);
     }
 
     if (diagonalResizeElement) {
-      diagonalResizeElement.addEventListener(
-        "mousedown",
-        handleResizeDiagonalMouseDown
-      );
       diagonalResizeElement.addEventListener("mouseup", handleMouseUp);
     }
 
@@ -110,31 +94,18 @@ const Test = () => {
 
     return () => {
       if (titleElement) {
-        titleElement.removeEventListener("mousedown", handleMouseDown);
         titleElement.removeEventListener("mouseup", handleMouseUp);
       }
 
       if (rightResizeElement) {
-        rightResizeElement.removeEventListener(
-          "mousedown",
-          handleResizeRightMouseDown
-        );
         rightResizeElement.removeEventListener("mouseup", handleMouseUp);
       }
 
       if (bottomResizeElement) {
-        bottomResizeElement.removeEventListener(
-          "mousedown",
-          handleResizeBottomMouseDown
-        );
         bottomResizeElement.removeEventListener("mouseup", handleMouseUp);
       }
 
       if (diagonalResizeElement) {
-        diagonalResizeElement.removeEventListener(
-          "mousedown",
-          handleResizeDiagonalMouseDown
-        );
         diagonalResizeElement.removeEventListener("mouseup", handleMouseUp);
       }
 
@@ -162,6 +133,7 @@ const Test = () => {
         style={{
           cursor: "move",
         }}
+        onMouseDown={handleMouseDown} //onMouseDown 수정
       >
         &nbsp;test
         <hr />
@@ -177,6 +149,7 @@ const Test = () => {
           height: "100%",
           cursor: "e-resize",
         }}
+        onMouseDown={handleResizeRightMouseDown}
       />
       <div
         ref={bottomResizeRef}
@@ -188,6 +161,7 @@ const Test = () => {
           height: "20px",
           cursor: "s-resize",
         }}
+        onMouseDown={handleResizeBottomMouseDown}
       />
       <div
         ref={diagonalResizeRef}
@@ -200,6 +174,7 @@ const Test = () => {
           height: "20px",
           cursor: "se-resize",
         }}
+        onMouseDown={handleResizeDiagonalMouseDown}
       />
     </div>
   );
