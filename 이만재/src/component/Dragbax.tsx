@@ -50,20 +50,20 @@ const DraggableBox: React.FC = () => {
       setResizingRight(false);
       setResizingBottom(false);
       setResizingCorner(false);
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
 
     // 드래깅 또는 리사이징 중일 때, 이벤트 리스너를 추가함
     if (isDragging || isResizingRight || isResizingBottom || isResizingCorner) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
     }
 
     // 컴포넌트가 언마운트되면 이벤트 리스너를 정리
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [
     isDragging,
